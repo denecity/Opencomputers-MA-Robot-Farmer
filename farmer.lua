@@ -95,6 +95,8 @@ while true do
 	end
 end
 
+--The Error:
+
 --too long without yielding:
 --stack traceback:
 --	[C]: in function 'error'
