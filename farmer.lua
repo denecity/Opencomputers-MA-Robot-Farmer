@@ -1,7 +1,6 @@
 local robot = require("robot")
 local computer = require("computer")
 local component = require("component")
-
 	
 
 while true do
@@ -9,29 +8,35 @@ while true do
     --just doing random movement
 
 	move = math.random(4)
-	if move == 1 then
-		robot.forward()
-		robot.useDown() end
-	if move == 2 then
-		robot.turnLeft()
-		robot.forward()
-		robot.useDown() end
-	if move == 3 then
-		robot.turnRight()
-		robot.forward()
-		robot.useDown() end
-	if move == 4 then
-		robot.turnLeft()
-		robot.turnLeft()
-		robot.forward()
-		robot.useDown() end
-
+	if move ~= prevMove then
+		if move == 1 then -- forward
+			prevMove = 4
+			robot.forward()
+			robot.useDown() end
+		if move == 2 then -- left
+			prevMove = 3
+			robot.turnLeft()
+			robot.forward()
+			robot.useDown() end
+		if move == 3 then -- right
+			prevMove = 2
+			robot.turnRight()
+			robot.forward()
+			robot.useDown() end
+		if move == 4 then -- back
+			prevMove = 1
+			robot.turnLeft()
+			robot.turnLeft()
+			robot.forward()
+			robot.useDown() end
+	end
 	--this is where the robot checks its battery
 
-	if computer.energy()/computer.maxEnergy < 0.1 then
+	if computer.energy()/computer.maxEnergy() < 0.1 then
 		robot.up()
 		distanceZ = component.navigation.findWaypoints(12)[1].position[3]
 		distanceX = component.navigation.findWaypoints(12)[1].position[1]
+		
 		--is the robot is exactly above the charger, it will just lower itself
 
 		if distanceZ == 0 and distanceZ == 0 then
@@ -93,17 +98,7 @@ while true do
 		robot.up()
 
 	end
+
+	os.sleep(0)
+
 end
-
---The Error:
-
---too long without yielding:
---stack traceback:
---	[C]: in function 'error'
---	machine:11: in function '__index'
---	machine:865: in function 'random'
---	/home/farmer.lua:7: in main chunk
---  (...tail calls...)
---	[C]: in function 'xpcall'
---  machine:751: in function 'xpcall'
---	/lib/process.lua:84: in function </lib/process.lua:80>
